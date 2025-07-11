@@ -35,7 +35,7 @@ function MovieList({ darkMode }) {
     try {
       setLoading(true);
       setSearched(true);
-      const response = await axios.get(`http://localhost:5000/api/search?query=${query}`);
+      const response = await axios.get(`/.netlify/functions/search?query=${query}`);
       setMovies(response.data.results);
     } catch (error) {
       console.error('Error fetching movies', error);

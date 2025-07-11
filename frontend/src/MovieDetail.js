@@ -12,7 +12,7 @@ function MovieDetail() {
     const fetchMovie = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:5000/api/movie/${id}`);
+        const response = await axios.get(`/.netlify/functions/movie-detail?id=${id}`);
         setMovie(response.data);
       } catch (error) {
         console.error('Error fetching movie details:', error);
