@@ -152,6 +152,23 @@ Deploy to platforms like:
 - Railway
 - Render
 
+## 🔒 Security Notes
+
+### Frontend Dependencies
+The frontend has some security vulnerabilities in development dependencies. To fix them:
+
+```bash
+cd frontend
+npm audit fix --force
+```
+
+**Note**: This may update `react-scripts` to a newer version, which could introduce breaking changes. Test thoroughly after updating.
+
+### Environment Variables
+- Never commit your `.env` file to version control
+- Use environment variables for all sensitive data
+- The backend will exit if `TMDB_API_KEY` is not configured
+
 ## 🤝 Contributing
 
 1. Fork the repository
