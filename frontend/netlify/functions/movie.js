@@ -18,19 +18,36 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const { id } = event.queryStringParameters || {};
-    
+    // Extract id from path (e.g., /api/movie/123)
+    let id = null;
+    if (event.path) {
+      const match = event.path.match(/movie\/(\d+)/);
+      if (match) id = match[1];
+    }
+    // Fallback to query param
+    if (!id) {
+      id = (event.queryStringParameters && event.queryStringParameters.id) || null;
+    }
     if (!id) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: 'Movie ID parameter is required' })
+        body: JSON.stringify({ error: 'Movie/TV ID parameter is required' })
+      };
+    }
+
+    // Get type from query param (default to 'movie')
+    const type = (event.queryStringParameters && event.queryStringParameters.type) || 'movie';
+    if (type !== 'movie' && type !== 'tv') {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Invalid type parameter. Must be "movie" or "tv".' })
       };
     }
 
     // Get API key from environment variable
     const apiKey = process.env.TMDB_API_KEY;
-    
     if (!apiKey) {
       return {
         statusCode: 500,
@@ -40,7 +57,7 @@ exports.handler = async function(event, context) {
     }
 
     // Make request to TMDb API
-    const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}`, {
+    const response = await axios.get(`https://api.themoviedb.org/3/${type}/${id}`, {
       params: {
         api_key: apiKey,
         language: 'en-US',
@@ -56,12 +73,11 @@ exports.handler = async function(event, context) {
 
   } catch (error) {
     console.error('Error:', error);
-    
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({ 
-        error: 'Failed to fetch movie details',
+        error: 'Failed to fetch movie/tv details',
         details: error.message 
       })
     };
