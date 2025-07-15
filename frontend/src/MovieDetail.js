@@ -30,7 +30,7 @@ function MovieDetail() {
         setError('');
         const endpoint = type === 'tv' ? 'tv' : 'movie';
         console.log('Fetching details for', id, 'type:', type, 'endpoint:', endpoint);
-        const response = await axios.get(`http://localhost:5000/api/${endpoint}/${id}`);
+        const response = await axios.get(`/api/${endpoint}/${id}`);
         setMovie(response.data);
       } catch (error) {
         console.error('Error fetching movie details:', error);

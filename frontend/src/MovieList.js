@@ -14,7 +14,7 @@ function MovieList({ selectedGenre, searchQuery }) {
       setError('');
       setSearched(false);
       axios
-        .get(`http://localhost:5000/api/search?genre=${selectedGenre.id}`)
+        .get(`/api/search?genre=${selectedGenre.id}`)
         .then((response) => {
           setMovies(response.data.results || []);
           setSearched(true);
@@ -33,7 +33,7 @@ function MovieList({ selectedGenre, searchQuery }) {
       setError('');
       setSearched(true);
       axios
-        .get(`http://localhost:5000/api/search?query=${searchQuery.trim()}`)
+        .get(`/api/search?query=${searchQuery.trim()}`)
         .then((response) => {
           setMovies(response.data.results || []);
         })
