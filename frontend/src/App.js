@@ -267,13 +267,15 @@ function FeaturedMoviesRow() {
   }, []);
 
   // Restore scroll position on mount
-  React.useEffect(() => {
+  useEffect(() => {
     const savedScroll = sessionStorage.getItem('featuredMoviesScroll');
     let attempts = 0;
+    const refAtMount = scrollRef.current; // Capture the ref at effect mount
+
     function restoreScroll() {
-      if (scrollRef.current && scrollRef.current.querySelector('.movie-poster-card')) {
+      if (refAtMount && refAtMount.querySelector('.movie-poster-card')) {
         if (savedScroll) {
-          scrollRef.current.scrollLeft = parseInt(savedScroll, 10);
+          refAtMount.scrollLeft = parseInt(savedScroll, 10);
         }
       } else if (attempts < 10) {
         attempts++;
@@ -282,8 +284,8 @@ function FeaturedMoviesRow() {
     }
     restoreScroll();
     return () => {
-      if (scrollRef.current) {
-        sessionStorage.setItem('featuredMoviesScroll', scrollRef.current.scrollLeft);
+      if (refAtMount) {
+        sessionStorage.setItem('featuredMoviesScroll', refAtMount.scrollLeft);
       }
     };
   }, []);
