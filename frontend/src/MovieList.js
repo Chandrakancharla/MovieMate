@@ -8,13 +8,15 @@ function MovieList({ selectedGenre, searchQuery }) {
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState('');
 
+  const API_BASE = process.env.REACT_APP_API_BASE || '/api';
+
   useEffect(() => {
     if (selectedGenre) {
       setLoading(true);
       setError('');
       setSearched(false);
       axios
-        .get(`/api/search?genre=${selectedGenre.id}`)
+        .get(`${API_BASE}/search?genre=${selectedGenre.id}`)
         .then((response) => {
           setMovies(response.data.results || []);
           setSearched(true);
@@ -25,7 +27,7 @@ function MovieList({ selectedGenre, searchQuery }) {
         })
         .finally(() => setLoading(false));
     }
-  }, [selectedGenre]);
+  }, [selectedGenre, API_BASE]);
 
   useEffect(() => {
     if (searchQuery && searchQuery.trim()) {
@@ -33,7 +35,7 @@ function MovieList({ selectedGenre, searchQuery }) {
       setError('');
       setSearched(true);
       axios
-        .get(`/api/search?query=${searchQuery.trim()}`)
+        .get(`${API_BASE}/search?query=${searchQuery.trim()}`)
         .then((response) => {
           setMovies(response.data.results || []);
         })
@@ -43,7 +45,7 @@ function MovieList({ selectedGenre, searchQuery }) {
         })
         .finally(() => setLoading(false));
     }
-  }, [searchQuery]);
+  }, [searchQuery, API_BASE]);
 
   console.log('MovieList selectedGenre:', selectedGenre);
 
@@ -123,12 +125,14 @@ function MovieList({ selectedGenre, searchQuery }) {
       overview: 'Six young people from New York City, on their own and struggling to survive in the real world, find the companionship, comfort and support they get from each other to be the perfect antidote to the pressures of life.'
     },
     {
-      id: 93693,
+      id: 110316,
       name: 'Alice in Borderland',
       title: 'Alice in Borderland',
       poster_path: '/lXhgCODAbBXL5buk9yEmTpOoOgR.jpg',
       first_air_date: '2020-12-10',
-      overview: 'An aimless gamer and his two friends find themselves in a parallel Tokyo, where they\'re forced to compete in a series of sadistic games to survive.'
+      overview: 'An aimless gamer and his two friends find themselves in a parallel Tokyo, where they\'re forced to compete in a series of sadistic games to survive.',
+      type: 'tv',
+      tmdb_link: 'https://www.themoviedb.org/tv/110316'
     },
     {
       id: 84958,

@@ -22,6 +22,7 @@ function MovieDetail() {
   const [error, setError] = useState('');
   const type = getTypeFromQuery(location.search);
   console.log('MovieDetail type from query:', type);
+  const API_BASE = process.env.REACT_APP_API_BASE || '/api';
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -30,7 +31,7 @@ function MovieDetail() {
         setError('');
         const endpoint = type === 'tv' ? 'tv' : 'movie';
         console.log('Fetching details for', id, 'type:', type, 'endpoint:', endpoint);
-        const response = await axios.get(`/api/${endpoint}/${id}`);
+        const response = await axios.get(`${API_BASE}/${endpoint}/${id}`);
         setMovie(response.data);
       } catch (error) {
         console.error('Error fetching movie details:', error);
@@ -41,7 +42,7 @@ function MovieDetail() {
     };
 
     fetchMovie();
-  }, [id, type]);
+  }, [id, type, API_BASE]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
